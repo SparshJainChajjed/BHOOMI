@@ -1,10 +1,9 @@
-
 arduinoPort = "COM3";  (* Comm 3 is my port but you have to replace it with your own *)
 
 
 arduino = DeviceOpen["Serial", {arduinoPort, "BaudRate" -> 9600}];
 
-(* thsi funvtion reads the ph data *)
+(* this function reads the ph data *)
 readPHValue[] := Module[{data, pH},
   data = StringTrim[DeviceReadBuffer[arduino]];
   If[StringLength[data] > 0,
@@ -17,18 +16,18 @@ readPHValue[] := Module[{data, pH},
   ]
 ];
 
-(* this funcbtion generates nutrient recommendation *)
+(* this function generates nutrient recommendation *)
 generateRecommendation[pH_, crop_] := Which[
-  crop == "wheat" && pH < 6.5, "Add nitrogen-rich fertiliser.",
+  crop == "wheat" && pH < 6.5, "Add nitrogen-rich fertilizer.",
   crop == "wheat" && pH > 7.5, "Soil is too alkaline, reduce lime.",
   crop == "wheat", "Soil is optimal for wheat.",
-  crop == "rice" && pH < 6.0, "Add phosphorus-rich fertiliser.",
+  crop == "rice" && pH < 6.0, "Add phosphorus-rich fertilizer.",
   crop == "rice" && pH > 7.0, "Soil is too alkaline, consider manure.",
   crop == "rice", "Soil is optimal for rice.",
   True, "Crop not supported."
 ];
 
-(* thisx is the loop that proccs the data  *)
+(* this is the loop that processes the data  *)
 cropType = "wheat";  (* Set your crop type here *)
 
 While[True,
